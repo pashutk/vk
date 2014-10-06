@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/normalize.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/selectize.css">
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
+
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="js/md5.js"></script>
+        <script src="js/selectize.js"></script>
+        <script src="js/mousetrap.js"></script>
+    </head>
+    <body>
+        
+        <main class="nonauthorized">
+            <h1>Чат ВКонтакте</h1>
+            <section class="auth">
+                <p>Для того, чтобы запустить приложение, необходимо пройти авторизацию ВКонтакте и разрешить приложению пользоваться VK API.</p>
+                <p>Для этого перейдите по ссылке ниже (ссылка откроется в новой вкладке), и скопируйте URL из адресной строки.</p>
+                <p>Не забудьте удостовериться в отсутсвии зловредных программ и скриптов, имеющих доступ к буферу обмена, или к внутренним методам вашего браузера.</p>
+                <a href="https://oauth.vk.com/authorize?client_id=4570402&scope=notify,friends,photos,audio,video,docs,notes,pages,status,offers,questions,wall,groups,messgaes,email,notifications,stats,ads,offline,nohttps&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.25&response_type=token" target="_blank" class="gotvk">Авторизоваться ВКонтакте</a>
+                <p>После этого вставьте его в поле ниже, и нажмите "Войти"</p>
+                <input type="text" id="token">
+                <button id="auth" onclick="login(1);">Войти</button>
+            </section>
+            <section class="mainframe">
+                <h2>Список последних 10 сообщений</h2>
+                <ul id="messages">
+                    <li><span class="author">Саша Панков</span>: <span id="message">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat reiciendis suscipit dolorem modi, commodi consequatur accusantium saepe accusamus provident veniam voluptates blanditiis vel, libero id omnis ea magnam. Facere, facilis.</span></li>
+                    <li><span class="author">Я</span>: <span id="message">Distinctio itaque, magnam suscipit cupiditate quod ipsa optio aliquam ea laborum ducimus, reiciendis, beatae maiores!</span></li>
+                    <li><span class="author">Тоня Паршина</span>: <span id="message">LFugiat reiciendis suscipit dolorem modi, commodi consequatur accusantium saepe accusamus provident veniam voluptates blanditiis vel, libero id omnis ea magnam. Facere, facilis.</span></li>
+                </ul>
+                <select id="for" placeholder="Получатель... (не айди)">
+                </select>
+                <textarea placeholder="Введите текст сообщения..." id="send" rows="5" class="mousetrap"></textarea>
+                <button id="sendButton" onclick="sendMessage();">Отправить</button>
+            </section>
+            <section class="errorframe">
+                <h2>Ошибка</h2>
+                <code id="error">Ошибка</code>
+            </section>
+        </main>
+
+        <script src="js/main_.js"></script>
+    </body>
+</html>

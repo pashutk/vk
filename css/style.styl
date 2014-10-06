@@ -1,0 +1,66 @@
+@font-face
+	font-family Emoji
+	src url(OpenSansEmoji.ttf)
+main
+	font-family Helvetica, Arial, Emoji
+	width 600px
+	margin 0 auto
+	h1
+	h2
+		text-align center
+	.mainframe
+	.auth
+	.errorframe
+		display none
+	&.error
+		.errorframe
+			display block
+	&.authorized
+		.mainframe
+			display block
+			ul#messages
+				padding 0
+				>li
+					list-style-type none
+					margin-bottom 10px
+					transition all .2s ease
+					-webkit-transform rotateX(0deg)
+					opacity 1
+					&.hidden
+						-webkit-transform rotateX(-90deg)
+						opacity 0
+						height 0
+						margin 0
+					.author
+						font-style italic
+			textarea#send
+				width 100%
+				margin-bottom 20px
+				border 1px solid black
+				padding 1%
+				box-sizing border-box
+			.selectize-control.single .selectize-input
+				background-image none
+				background-color white
+				border-radius 0
+				border 1px solid black
+				font-size 100%
+				color #222
+				span.name:before
+					content 'Сообщение для: '
+					color #aaa
+				>input
+					font-size 100%
+			input#for
+				border 1px solid black
+				padding 1%
+				box-sizing border-box
+				margin-bottom 20px
+	&.nonauthorized
+		.auth
+			display block
+@media screen and (max-width:620px)
+	main
+		width 100%
+		padding 0 3%
+		box-sizing border-box
