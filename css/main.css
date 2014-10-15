@@ -61,7 +61,38 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+div#chvk {
+    margin: 20px 0;
+    font-size: 34px; font-weight: bold;
+    text-align: center;
+}
 
+div#chvk div#ch {
+    width: 23px;
+    text-align: left;
+}
+
+div#chvk div#vk {
+    width: 49px;
+    text-align: left;
+}
+
+div#chvk div {
+    display: inline-block;
+    vertical-align: top;
+    transition: all .4s ease;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+div#chvk:hover div#ch {
+    width: 70px;
+}
+
+div#chvk:hover div#vk {
+    width: 184px;
+    
+}
 
 
 

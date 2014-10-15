@@ -1,3 +1,6 @@
+body {
+  background-image: url("../img/texture.png");
+}
 @font-face {
   font-family: Emoji;
   src: url("OpenSansEmoji.ttf");
@@ -40,17 +43,31 @@ main.authorized .mainframe ul#messages >li.hidden {
 }
 main.authorized .mainframe ul#messages >li .author {
   font-style: italic;
+  border-bottom: 1px dotted;
+  cursor: pointer;
+}
+main.authorized .mainframe ul#messages >li .attachments {
+  color: #808080;
+  font-size: 80%;
+  font-style: italic;
+  margin-top: 5px;
+}
+main.authorized .mainframe ul#messages >li .attachments >* {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 5px;
 }
 main.authorized .mainframe textarea#send {
   width: 100%;
   margin-bottom: 20px;
   border: 1px solid #000;
   padding: 1%;
+  background: transparent;
   box-sizing: border-box;
 }
 main.authorized .mainframe .selectize-control.single .selectize-input {
   background-image: none;
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 0;
   border: 1px solid #000;
   font-size: 100%;

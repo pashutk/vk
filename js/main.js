@@ -1,8 +1,16 @@
+Mousetrap.bind(['ctrl+enter', 'command+enter'], function(e) {
+    sendMessage();
+});
+
+
+
 var session = {};
 
 function login(dev){
 	var res = document.getElementById('token').value;
-	
+	if (dev) {
+		res = 'https://oauth.vk.com/blank.html#access_token=8d6cedadb5f8818224c56408e95df980a823060e2063171ce8cbb92d7a976dfd0f3176c74c982c3443943&expires_in=0&user_id=15676642&email=djlewap@gmail.com&secret=05b5f92c99b7afea45'
+	}
 	var params = res.substr(res.search('#')+1).split('&');
 	for (var i = 0; i < params.length; i++) {
 		session[params[i].substring(0, params[i].search('='))] = params[i].substring(params[i].search('=')+1);
@@ -42,8 +50,35 @@ function login(dev){
 				friends[res.response[0].items[i].id] = {};
 				friends[res.response[0].items[i].id].name = res.response[0].items[i].first_name+' '+res.response[0].items[i].last_name;
 				friends[res.response[0].items[i].id].datName = res.response[1].items[i].first_name+' '+res.response[1].items[i].last_name;
-				
+				friendsMassive[i] = friends[res.response[0].items[i].id];
 			};
+
+			// initialize the selectize control
+			var $select = $('#for').selectize({
+			    persist: false,
+			    maxItems: 1,
+			    valueField: 'name',
+			    labelField: 'name',
+			    searchField: ['name', 'datName'],
+			    options: friendsMassive,
+			    render: {
+			        item: function(item, escape) {
+			            return '<div>' +
+			                (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
+			                // (item.datName ? '<span class="datName">' + escape(item.datName) + '</span>' : '') +
+			            '</div>';
+			        },
+			        option: function(item, escape) {
+			            var label = item.name || item.datName;
+			            var caption = item.name ? item.datName : null;
+			            return '<div>' +
+			                '<span class="label">' + escape(label) + '</span>' +
+			                // (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
+			            '</div>';
+			        }
+			    }
+			});
+		selectize = $select[0].selectize;
 		})
 
 
@@ -66,6 +101,7 @@ var inbox = [];
 var outbox = [];
 var messages = [];
 var lastMessageId;
+var selectize;
 
 function buildMessagesMassive(){
 	//build
@@ -145,22 +181,25 @@ function reqConstructor(method, params){
 }
 function sendMessage(){
 	var forWho = document.getElementById('for').value;
-	for (var fio in friends){
-		if (friends[fio].name == forWho){
-			forWho = fio;
-		} else if(friends[fio].datName == forWho){
-			forWho = fio;
+	if (forWho) {
+		for (var fio in friends){
+			if (friends[fio].name == forWho){
+				forWho = fio;
+			} else if(friends[fio].datName == forWho){
+				forWho = fio;
+			}
 		}
-	}
 
-	url9 = 'http://api.vk.com/method/messages.send?user_id='+forWho+'&message='+document.getElementById("send").value+'&v=5.25&access_token='+session.access_token+'&callback=qwerty3';
-	url10= url9+'&sig='+CryptoJS.MD5(url9.substr(17)+session.secret).toString();
-	$.ajax({url: url10, dataType: 'jsonp', cache: true, jsonpCallback: 'qwerty3',type: 'POST'})
-		.success(function(res){
-			document.getElementById("send").value = '';
-		})
+		if (document.getElementById("send").value) {
 
-	console.log(forWho);
+			url9 = 'http://api.vk.com/method/messages.send?user_id='+forWho+'&message='+document.getElementById("send").value+'&v=5.25&access_token='+session.access_token+'&callback=qwerty3';
+			url10= url9+'&sig='+CryptoJS.MD5(url9.substr(17)+session.secret).toString();
+			$.ajax({url: url10, dataType: 'jsonp', cache: true, jsonpCallback: 'qwerty3',type: 'POST'})
+				.success(function(res){
+					document.getElementById("send").value = '';
+				})
+		};
+	};
 }
 
 var url0 = "http://api.vk.com/method/messages.get?out=1&count=10&v=5.25&access_token="+session.access_token+"&callback=qwerty";
@@ -169,6 +208,7 @@ var url2,url3,url4,url5;
 var ress;
 var temp,temp2;
 var friends = {};
+var friendsMassive = [];
 
 function qwerty3(){};
 function qwerty1(currentLastMessageId){
@@ -178,10 +218,39 @@ function qwerty1(currentLastMessageId){
 		for (var i = 10; i < 20; i++) {
 			var li = document.createElement('li');
 			var author = messages[i].out ? 'Я - '+friends[messages[i].user_id].datName : friends[messages[i].user_id].name;
-			li.innerHTML = '<span class="author">'+author+'</span>: <span id="message">'+messages[i].body+'</span>'
+			li.innerHTML = '<span class="author">'+author+'</span>: <span id="message">'+messages[i].body+'</span>';
+			if (messages[i].attachments) {
+				var div = document.createElement('div');
+				div.className = 'attachments';
+				div.innerText = ' Вложения: '
+				for (var z = 0; z < messages[i].attachments.length; z++) {
+					if (messages[i].attachments[z].type == 'photo') {
+						var img = document.createElement('img');
+						img.src = messages[i].attachments[z].photo.photo_75;
+						var a = document.createElement('a');
+						a.target = '_blank';
+						a.appendChild(img);
+						a.href = messages[i].attachments[z].photo.photo_75;
+						div.appendChild(a);
+					} else {
+						var span = document.createElement('span');
+						span.innerText = messages[i].attachments[0].type;
+						div.appendChild(span);
+					}
+					
+				};
+				
+				li.appendChild(div);
+				
+
+			};
+			
 			m.appendChild(li);
 		};
 		lastMessageId = currentLastMessageId;
 	}
 	
 }
+$('.author').click(function(){
+	selectize.setValue($(this).text());
+});
