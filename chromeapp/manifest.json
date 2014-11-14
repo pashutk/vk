@@ -1,0 +1,26 @@
+{
+  "name": "ChatVK",
+  "description": "client messager for vk.com",
+  "version": "0.1",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": ["js/vendor/jquery-1.11.1.min.js","js/md5.js","background.js"] 
+    }
+  },
+  "permissions": [
+          "tabs",
+          "webview",
+          "http://api.vk.com/*",
+          "http://*/*",
+          "https://*/*"
+        ],
+  "icons": { 
+    "16" : "icons/16.png",
+    "32" : "icons/32.png",
+    "64" : "icons/64.png",
+    "128" : "icons/128.png",
+    "256" : "icons/256.png"
+   },
+   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

@@ -1,0 +1,13 @@
+body{
+	margin: 0;
+}
+header{
+	background-color: #CCC;
+	height: 40px;
+	width: 100%;
+	-webkit-app-region: drag;
+}
+header .close{
+	float: right;
+	margin: 10px 10px 0 0;
+}
